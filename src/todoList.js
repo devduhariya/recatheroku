@@ -5,16 +5,16 @@ import "./App.css";
 export default function TodoList(props) {
   const [items, setItems] = useState([]);
   const [newItem, setNewItem] = useState("");
-
+  const baseurl ='https://firsttodo-app.herokuapp.com/'
   const addItem = () => {
     // send data to backend
-    fetch("https://firsttodo-app.herokuapp.com/todo", {
+    fetch(baseurl+'todo', {
       method: "POST",
       body: JSON.stringify({ task: newItem }),
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include"  
+      credentials: "include"
     })
       .then((r) => r.json())
       .then((resp) => {
@@ -31,8 +31,8 @@ export default function TodoList(props) {
 
   const deleteHandler = (itemIdx) => {
     const idToDelete = items[itemIdx]._id;
-    fetch(`https://firsttodo-app.herokuapp.com/todo/${idToDelete}`, {
-      method: "DELETE", credentials: "include"  
+    fetch(baseurl+`todo/${idToDelete}`, {
+      method: "DELETE", credentials: "include"
     }).then((r) => {
       console.log("Got successfully DELETE");
       items.splice(itemIdx, 1);
@@ -42,13 +42,13 @@ export default function TodoList(props) {
 
   const editHandler = (editedValue, itemIdx) => {
     const idToEdit = items[itemIdx]._id;
-    fetch(`https://firsttodo-app.herokuapp.com/todo/${idToEdit}`, {
+    fetch(baseurl+`todo/${idToEdit}`, {
       method: "PUT",
       body: JSON.stringify({ task: editedValue }),
       headers: {
         "Content-Type": "application/json",
       },
-       credentials: "include"  
+      credentials: "include"
     })
       .then((r) => r.json())
       .then((resp) => {
@@ -59,13 +59,13 @@ export default function TodoList(props) {
   };
 
   useEffect(() => {
-    fetch("https://firsttodo-app.herokuapp.com/todo", { credentials: "include"  })
+    fetch(baseurl+"todo", { credentials: "include" })
       .then((r) => r.json())
       .then((arr) => {
         const sortedArr = arr.sort((a, b) => {
-            const aDateNumeric = new Date(a.creationTime).valueOf();
-            const bDateNumeric = new Date(b.creationTime).valueOf();
-            return aDateNumeric - bDateNumeric;
+          const aDateNumeric = new Date(a.creationTime).valueOf();
+          const bDateNumeric = new Date(b.creationTime).valueOf();
+          return aDateNumeric - bDateNumeric;
 
         }); // sorts in ascending order of id - timestamp
         // const taskArr = sortedArr.map((item) => item.task); // gets the task for each item to create a strig array
@@ -75,10 +75,10 @@ export default function TodoList(props) {
 
   return (
     <div id="main">
-        <div className="user">
-            <div>Username: <b>{props.username}</b></div>
-            <button onClick={props.logoutHandler}>Log Out</button>
-        </div>
+      <div className="user">
+        <div>Username: <b>{props.username}</b></div>
+        <button onClick={props.logoutHandler}>Log Out</button>
+      </div>
       <div className="new">
         <textarea
           id="task"

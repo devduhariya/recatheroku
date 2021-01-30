@@ -5,12 +5,13 @@ import "./App.css";
 // const port = 8080
 
 function App() {
+  const baseurl = "https://firsttodo-app.herokuapp.com/";
   const [loggedIn, setLoggedIn] = useState(false);
   const [error, setError] = useState(undefined);
   const [userName, setUserName] = useState(undefined);
 
   const getUserName = () => {
-    return fetch('https://firsttodo-app.herokuapp.com/userinfo', { credentials: "include"})
+    return fetch(baseurl+'userinfo', { credentials: "include"})
     .then(r => {
       if(r.ok) {
         return r.json();
@@ -33,14 +34,14 @@ function App() {
 
 
   const signupHandler = (username, password) => {
-    loginOrSignup('https://firsttodo-app.herokuapp.com/signup', username, password);
+    loginOrSignup(baseurl+'signup', username, password);
   };
   const loginHandler = (username, password) => {
-    loginOrSignup('https://firsttodo-app.herokuapp.com/login', username, password);
+    loginOrSignup(baseurl+'login', username, password);
   };
 
   const logoutHandler = () => {
-    return fetch('https://firsttodo-app.herokuapp.com/logout', { credentials: 'include'})
+    return fetch(baseurl+'logout', { credentials: 'include'})
     .then(r => {
       if(r.ok) {
         setLoggedIn(false);
